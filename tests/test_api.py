@@ -2,9 +2,10 @@
 
 from app import template_hello
 
-def test_hello(self):
-    self.assertEqual(template_hello(), "<p>Hello, World!</p>")
-    self.assertNotEqual(template_hello(), "<p>Hello, World</p>")
+def test_hello_world():
+    assert template_hello() == "<p>Hello, World!</p>"
+    assert template_hello() != "<p>Hello, World</p>"
+
 
 # class TestStringMethods(unittest.TestCase):
 
@@ -20,4 +21,4 @@ def test_hello(self):
 #     #     self.assertEqual(response.text, "<p>Hello, World!</p>")
 
 # if __name__ == '__main__':
-#     unittest.main
+#     pytest.main
