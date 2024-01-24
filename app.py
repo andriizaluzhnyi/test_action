@@ -1,6 +1,6 @@
 from flask import Flask
 
-from app import template_hello
+from app import template_hello, divide
 
 app = Flask(__name__)
 
