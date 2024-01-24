@@ -8,7 +8,7 @@ from app import template_hello, divide
 
 def test_hello_world():
     assert template_hello() == "<p>Hello, World!</p>"
-    assert template_hello() != "<p>Hello, World</p>"
+    assert template_hello() != "<p>Hello, Worl</p>"
     assert template_hello() != "<p>Helo, World!</p>"
 
 
