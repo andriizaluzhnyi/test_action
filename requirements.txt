@@ -1,2 +1,2 @@
-unittest
-requests
+flake8
+pytest
