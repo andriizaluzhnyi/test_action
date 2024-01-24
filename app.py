@@ -1,7 +1,6 @@
 from flask import Flask
 
-def template_hello():
-    return "<p>Hello, World!</p>"
+from app import template_hello
 
 app = Flask(__name__)
 
