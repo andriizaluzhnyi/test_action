@@ -13,7 +13,7 @@ def test_hello_world():
     assert template_hello() != "<p>Helo, World!</p>"
 
 
-def test_divide(self):
+def test_divide():
     assert divide(10, 5) == 2
     assert divide(10, 1) == 10
 
