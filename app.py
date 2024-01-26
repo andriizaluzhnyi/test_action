@@ -1,4 +1,4 @@
-import requests
+# import requests
 from flask import Flask
 
 from app import template_hello, divide
