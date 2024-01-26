@@ -21,5 +21,5 @@ def divide(num1, num2):
 
 
 
-if __name__ == '__main__':
-    hello_world()
+# if __name__ == '__main__':
+#     hello_world()
