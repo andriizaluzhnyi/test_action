@@ -28,8 +28,8 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: dsights
-        environment_name: Dsights-env
+        application_name: python-bot
+        environment_name: Python-bot-env
         version_label: 12345
         region: eu-west-3
         use_existing_version_if_available: true
