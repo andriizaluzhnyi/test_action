@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 def template_hello():
-    return "<p>Hello, World!</p>"
+    return "<p>Hello, World! ver2</p>"
 
 
 @app.route("/")
