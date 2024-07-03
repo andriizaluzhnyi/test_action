@@ -31,5 +31,5 @@ jobs:
         application_name: dsights
         environment_name: dsights-env
         version_label: 12345
-        region: us-east-1
+        region: eu-west-3
         deployment_package: deploy.zip
