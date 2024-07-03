@@ -30,6 +30,6 @@ jobs:
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         application_name: dsights
         environment_name: e-aqfkkrsr4w
-        version_label: 123456
+        version_label: 12
         region: eu-west-3
         deployment_package: deploy.zip
