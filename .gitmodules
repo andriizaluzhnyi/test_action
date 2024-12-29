@@ -1,0 +1,3 @@
+[submodule "tg_bot"]
+	path = tg_bot
+	url = git@github.com:andriizaluzhnyi/tg_bot.git
