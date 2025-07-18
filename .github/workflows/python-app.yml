@@ -19,7 +19,7 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: npf-kenvue-int
+    environment: production
     # if: ${{ github.ref == 'refs/heads/development' }}
 
     steps:
