@@ -1,43 +1,102 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Python application
+name: NPF-service deployment
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - development
+      - master
   workflow_dispatch:
     inputs:
-      parameter:
-        description: My Parameter
+      heroku_app:
+        description: "Heroku app name"
+        required: true
+        default: "npf-kenvue-int"
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
+    environment: npf-kenvue-int
+    # if: ${{ github.ref == 'refs/heads/development' }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Log in to Heroku Container Registry
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
+
+      - name: Send POST to Power Automate
+        if: success()
+        uses: fjogeleit/http-request-action@v1.16.4
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          method: 'POST'
+          contentType: 'application/json'
+          data: |
+            {
+              "type": "text",
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "content": {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "text": "✅ NPF-service successfully deployed to Heroku!"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "📧 <at>karyna.kodenko@cloverpop.com</at>"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+
+      - name: Send POST to Power Automate
+        if: failure()
+        uses: fjogeleit/http-request-action@v1.16.4
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          method: 'POST'
+          contentType: 'application/json'
+          data: |
+            {
+                "type": "text",
+                "attachments": [
+                  {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                      "type": "AdaptiveCard",
+                      "version": "1.4",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "text": "⛔ NPF-service failed deployed to Heroku!"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
