@@ -31,7 +31,7 @@ jobs:
       - name: Log in to Heroku Container Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: echo $HEROKU_API_KEY
+        run: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
 
       # - name: Send POST to Power Automate
       #   if: success()
