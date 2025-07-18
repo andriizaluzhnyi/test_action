@@ -19,7 +19,6 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
     # if: ${{ github.ref == 'refs/heads/development' }}
 
     steps:
@@ -33,70 +32,70 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: echo $HEROKU_API_KEY | docker login --username=_ --password-stdin registry.heroku.com
 
-      # - name: Send POST to Power Automate
-      #   if: success()
-      #   uses: fjogeleit/http-request-action@v1.16.4
-      #   with:
-      #     url: ${{ secrets.WEBHOOK_URL }}
-      #     method: 'POST'
-      #     contentType: 'application/json'
-      #     data: |
-      #       {
-      #         "type": "text",
-      #         "attachments": [
-      #           {
-      #             "contentType": "application/vnd.microsoft.card.adaptive",
-      #             "content": {
-      #               "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      #               "type": "AdaptiveCard",
-      #               "version": "1.4",
-      #               "body": [
-      #                 {
-      #                   "type": "TextBlock",
-      #                   "text": "✅ NPF-service successfully deployed to Heroku!"
-      #                 },
-      #                 {
-      #                   "type": "TextBlock",
-      #                   "text": "📧 <at>karyna.kodenko@cloverpop.com</at>"
-      #                 },
-      #                 {
-      #                   "type": "TextBlock",
-      #                   "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
-      #                 }
-      #               ]
-      #             }
-      #           }
-      #         ]
-      #       }
+      - name: Send POST to Power Automate
+        if: success()
+        uses: fjogeleit/http-request-action@v1.16.4
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          method: 'POST'
+          contentType: 'application/json'
+          data: |
+            {
+              "type": "text",
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "content": {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                      {
+                        "type": "TextBlock",
+                        "text": "✅ NPF-service successfully deployed to Heroku!"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "📧 <at>karyna.kodenko@cloverpop.com</at>"
+                      },
+                      {
+                        "type": "TextBlock",
+                        "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
 
-      # - name: Send POST to Power Automate
-      #   if: failure()
-      #   uses: fjogeleit/http-request-action@v1.16.4
-      #   with:
-      #     url: ${{ secrets.WEBHOOK_URL }}
-      #     method: 'POST'
-      #     contentType: 'application/json'
-      #     data: |
-      #       {
-      #           "type": "text",
-      #           "attachments": [
-      #             {
-      #               "contentType": "application/vnd.microsoft.card.adaptive",
-      #               "content": {
-      #                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      #                 "type": "AdaptiveCard",
-      #                 "version": "1.4",
-      #                 "body": [
-      #                   {
-      #                     "type": "TextBlock",
-      #                     "text": "⛔ NPF-service failed deployed to Heroku!"
-      #                   },
-      #                   {
-      #                     "type": "TextBlock",
-      #                     "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
-      #                   }
-      #                 ]
-      #               }
-      #             }
-      #           ]
-      #         }
+      - name: Send POST to Power Automate
+        if: failure()
+        uses: fjogeleit/http-request-action@v1.16.4
+        with:
+          url: ${{ secrets.WEBHOOK_URL }}
+          method: 'POST'
+          contentType: 'application/json'
+          data: |
+            {
+                "type": "text",
+                "attachments": [
+                  {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                      "type": "AdaptiveCard",
+                      "version": "1.4",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "text": "⛔ NPF-service failed deployed to Heroku!"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "📧 <at>andrii.zaluzhnyi@cloverpop.com</at>"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
